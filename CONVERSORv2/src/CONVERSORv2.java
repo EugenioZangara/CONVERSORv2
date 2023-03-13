@@ -112,7 +112,7 @@ public class CONVERSORv2 {
 				System.out.println(Datos[0]);
 				Controlador controlador = new Controlador();
 				double resultado = controlador.Convertir(Datos);
-				lblResultadoMostrar.setText(String.format("%.2f", resultado) +" "+Datos[2]);
+				lblResultadoMostrar.setText(String.format("%.4f", resultado) +" "+Datos[2]);
 				System.out.println(resultado);
 			}
 		});

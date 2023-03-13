@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import conexionAPI.Conexion;
 import longitudes.Longitud;
+import pesos.Pesos;
 import temperaturas.Temperatura;
 import volumen.Volumen;
 
@@ -52,6 +53,14 @@ public class Controlador {
 					+ volumenConvertido.getUnidad());
 			return volumenConvertido.getMagnitud();
 
+		case "Pesos":
+			Pesos peso = new Pesos((double) Datos[3], (String) Datos[1]);
+			Pesos pesoConvertido = peso.convertir(peso, (String) Datos[2]);
+			System.out.println(Datos[3] + " " + Datos[1] + " equivalen a: " + pesoConvertido.getMagnitud() + " "
+					+ pesoConvertido.getUnidad());
+			return pesoConvertido.getMagnitud();
+			
+			
 		default:
 			System.out.println("Error fatal, cierre el programa y vuelva a iniciarlo");
 			return 0;
