@@ -41,6 +41,8 @@ public class CONVERSORv2 {
 	private JComboBox<String> comboBoxEligeMonedaDestino;
 	private DefaultComboBoxModel<String> modelUnidades;
 	private DefaultComboBoxModel<String> modelUnidadesDestino;
+	private JLabel lblResultadoMostrar = new JLabel("");
+	private double resultado;
 	public static final String[] unidadesLongitud = new String[] { "m", "km", "ft", "in", "nm", "mi" };
 	public static final String[] unidadesVolumen = new String[] { "m3", "lt", "ft3", "ImpGal", "USGal" };
 	public static final String[] unidadesTemperatura = new String[] { "Kelvin", "Celsius", "Farenheit" };
@@ -88,6 +90,7 @@ public class CONVERSORv2 {
 
 		JButton btnNewButton = new JButton("CONVERTIR");
 		btnNewButton.addMouseListener(new MouseAdapter() {
+
 			@Override
 
 			public void mouseClicked(MouseEvent e) {
@@ -106,9 +109,11 @@ public class CONVERSORv2 {
 				Datos[1] = origen;
 				Datos[2] = destino;
 				Datos[3] = magnitud;
+				System.out.println(Datos[0]);
 				Controlador controlador = new Controlador();
-				controlador.Convertir(Datos);
-
+				double resultado = controlador.Convertir(Datos);
+				lblResultadoMostrar.setText(String.format("%.2f", resultado) +" "+Datos[2]);
+				System.out.println(resultado);
 			}
 		});
 		btnNewButton.setBorder(new EtchedBorder(EtchedBorder.RAISED, null, null));
@@ -210,12 +215,12 @@ public class CONVERSORv2 {
 		background.add(panel_3);
 		panel_3.setLayout(null);
 
-		JLabel lblNewLabel_2 = new JLabel("ACA VA EL RESULTADO");
-		lblNewLabel_2.setBackground(new Color(255, 255, 255));
-		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2.setFont(new Font("Consolas", Font.PLAIN, 14));
-		lblNewLabel_2.setBounds(0, 104, 231, 79);
-		panel_3.add(lblNewLabel_2);
+		this.lblResultadoMostrar = new JLabel("");
+		this.lblResultadoMostrar.setBackground(new Color(255, 255, 255));
+		this.lblResultadoMostrar.setHorizontalAlignment(SwingConstants.CENTER);
+		this.lblResultadoMostrar.setFont(new Font("Consolas", Font.PLAIN, 14));
+		this.lblResultadoMostrar.setBounds(0, 104, 231, 79);
+		panel_3.add(this.lblResultadoMostrar);
 
 		JLabel lblResultado_1 = new JLabel("Resultado:");
 		lblResultado_1.setHorizontalAlignment(SwingConstants.CENTER);
