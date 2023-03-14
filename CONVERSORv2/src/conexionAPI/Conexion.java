@@ -1,74 +1,67 @@
 package conexionAPI;
-
+import org.json.JSONException;
 import org.json.JSONObject;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Iterator;
 
 public class Conexion {
-	public static double obtenerCotizacion(String monedaOrigen, String monedaDestino) throws Exception {
-	    // Crea una URL para la API
-	    String urlStr = "https://openexchangerates.org/api/latest.json?app_id=381aad80babe43d684b0a206432193f9&symbols=" + monedaDestino + "&base=" + monedaOrigen;
-	    System.out.println(urlStr);
-	    URL url = new URL(urlStr);
+    public static double obtenerCotizacion(String monedaOrigen, String monedaDestino, double monto) throws IOException {
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
 
-	    // Abre una conexión HTTP a la URL
-	    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        Request request = new Request.Builder()
+                .url("https://api.apilayer.com/exchangerates_data/convert?to=" + monedaDestino + "&from=" + monedaOrigen + "&amount=" + monto)
+                .addHeader("apikey", "HpDx3XEj5EluB2BU0DFuLBpfIaHWqA5V")
+                .method("GET", null)
+                .build();
 
-	    // Establece el método HTTP GET
-	    con.setRequestMethod("GET");
+        try {
+        	 Response response = client.newCall(request).execute();
+             String jsonResponse = new String(response.body().bytes());
+             JSONObject jsonObject = new JSONObject(jsonResponse);
+             return jsonObject.getDouble("result");
+         } catch (IOException | JSONException e) {
+             System.out.println("Error: " + e.getMessage());
+         }
 
-	    // Lee la respuesta de la API
-	    BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-	    String inputLine;
-	    StringBuffer content = new StringBuffer();
-	    while ((inputLine = in.readLine()) != null) {
-	        content.append(inputLine);
-	    }
-	    in.close();
-	    con.disconnect();
+         return 0;
+     }
 
-	    // Convierte la respuesta de la API de JSON a un objeto Java utilizando la clase JSONObject
-	    JSONObject jsonObject = new JSONObject(content.toString());
+        
+    
 
-	    // Obtiene la cotización de la moneda de origen a la moneda de destino
-	    double tasaCambio = jsonObject.getJSONObject("rates").getDouble(monedaDestino);
 
-	    return tasaCambio;
-	}
-	
-	
-	
 	public static JSONObject obtenerDivisasDisponibles() throws Exception {
-        // Crea una URL para la API
-        URL url = new URL("https://openexchangerates.org/api/currencies.json");
+		// Crea una URL para la API
+		URL url = new URL("https://openexchangerates.org/api/currencies.json");
 
-        // Abre una conexión HTTP a la URL
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+		// Abre una conexión HTTP a la URL
+		HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
-        // Establece el método HTTP GET
-        con.setRequestMethod("GET");
+		// Establece el método HTTP GET
+		con.setRequestMethod("GET");
 
-        // Lee la respuesta de la API
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer content = new StringBuffer();
-        while ((inputLine = in.readLine()) != null) {
-            content.append(inputLine);
-        }
-        in.close();
-        con.disconnect();
+		// Lee la respuesta de la API
+		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		String inputLine;
+		StringBuffer content = new StringBuffer();
+		while ((inputLine = in.readLine()) != null) {
+			content.append(inputLine);
+		}
+		in.close();
+		con.disconnect();
 
-        // Convierte la respuesta de la API de JSON a un objeto Java utilizando la clase JSONObject
-         JSONObject jsonObject = new JSONObject(content.toString());
-         return jsonObject;
-         
-         
-         
-         
-         
+		// Convierte la respuesta de la API de JSON a un objeto Java utilizando la clase
+		// JSONObject
+		JSONObject jsonObject = new JSONObject(content.toString());
+		return jsonObject;
+
 //        // Itera sobre las claves de objeto JSON y muestra los nombres de las divisas disponibles
 //        Iterator<String> keys = jsonObject.keys();
 //        while(keys.hasNext()) {
@@ -76,8 +69,5 @@ public class Conexion {
 //            String value = jsonObject.getString(key);
 //            System.out.println(key + " - " + value);
 //            */
-        }
-    }
-	
-	
-
+	}
+}

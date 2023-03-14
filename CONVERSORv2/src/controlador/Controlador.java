@@ -3,6 +3,7 @@ package controlador;
 import java.util.ArrayList;
 
 import conexionAPI.Conexion;
+import divisas.Moneda;
 import longitudes.Longitud;
 import pesos.Pesos;
 import temperaturas.Temperatura;
@@ -28,14 +29,18 @@ public class Controlador {
 			return longitudConvertido.getMagnitud();
 
 		case "Divisas":
-			double cotizacion = 0;
+			double cotizacion;
 			try {
-				cotizacion = (Conexion.obtenerCotizacion((String) Datos[1], (String) Datos[2]));
-
+				Moneda moneda=new Moneda();
+				moneda.setValor((Double)Datos[3]);
+				cotizacion=((moneda.convertir((String)Datos[1],(String)Datos[2])).getValor());
+				
+				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
+				System.out.println("aca esta el error");
 				e.printStackTrace();
-
+				cotizacion=0;
 			}
 
 			return cotizacion;

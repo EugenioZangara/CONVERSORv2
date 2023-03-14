@@ -10,8 +10,8 @@ public Moneda convertir ( String monedaOrigen, String MonedaDestino) {
 	Moneda nuevaMoneda= new Moneda();
 	double cotizacion;
 	try {
-		cotizacion = Conexion.obtenerCotizacion(monedaOrigen, MonedaDestino);
-		nuevaMoneda.valor= this.valor * cotizacion;
+		nuevaMoneda.valor = Conexion.obtenerCotizacion(monedaOrigen, MonedaDestino, this.valor);
+		//nuevaMoneda.valor= this.valor * cotizacion;
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
 		System.out.println("Error al conectar con Open Exchange Rates");
